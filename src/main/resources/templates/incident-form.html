@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario incidencia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div class="dashboard-shell">
+    <div class="container py-4 py-md-5">
+
+        <section class="dashboard-header mb-4">
+            <div class="dashboard-header__content">
+                <div>
+                    <span class="section-kicker">Gestión interna</span>
+                    <h1 class="dashboard-title" th:text="${formTitle}">Formulario incidencia</h1>
+                    <p class="dashboard-subtitle">
+                        Completa la información de la incidencia y guarda los cambios.
+                    </p>
+                </div>
+
+                <div class="dashboard-header__actions">
+                    <a th:href="@{/incidents}" class="btn btn-outline-secondary btn-lg">Volver al panel</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-layout">
+            <article class="form-panel-card">
+                <div class="form-panel-card__header">
+                    <h2 class="form-panel-card__title">Datos de la incidencia</h2>
+                    <p class="form-panel-card__subtitle">
+                        Rellena los campos obligatorios para registrar o editar la incidencia.
+                    </p>
+                </div>
+
+                <form th:action="@{/incidents/save}" th:object="${incident}" method="post" class="incident-form">
+                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{createdDate}">
+
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label custom-label">Título</label>
+                            <input type="text"
+                                   th:field="*{title}"
+                                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
+                                   class="form-control custom-input"
+                                   placeholder="Ej. Error al guardar usuario"
+                                   required>
+                            <div class="invalid-feedback d-block"
+                                 th:if="${#fields.hasErrors('title')}"
+                                 th:errors="*{title}">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label custom-label">Descripción</label>
+                            <textarea th:field="*{description}"
+                                      th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                                      class="form-control custom-input custom-textarea"
+                                      rows="5"
+                                      placeholder="Describe el problema con el mayor detalle posible"
+                                      required></textarea>
+                            <div class="invalid-feedback d-block"
+                                 th:if="${#fields.hasErrors('description')}"
+                                 th:errors="*{description}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label custom-label">Prioridad</label>
+                            <select th:field="*{priority}" class="form-select custom-input">
+                                <option value="LOW">LOW</option>
+                                <option value="MEDIUM">MEDIUM</option>
+                                <option value="HIGH">HIGH</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label custom-label">Estado</label>
+                            <select th:field="*{status}" class="form-select custom-input">
+                                <option value="OPEN">OPEN</option>
+                                <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                <option value="CLOSED">CLOSED</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label custom-label">Responsable</label>
+                            <input type="text"
+                                   th:field="*{assignee}"
+                                   th:classappend="${#fields.hasErrors('assignee')} ? 'is-invalid'"
+                                   class="form-control custom-input"
+                                   placeholder="Ej. Giovanna Vanessa"
+                                   required>
+                            <div class="invalid-feedback d-block"
+                                 th:if="${#fields.hasErrors('assignee')}"
+                                 th:errors="*{assignee}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a th:href="@{/incidents}" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">Guardar incidencia</button>
+                    </div>
+                </form>
+            </article>
+
+            <aside class="form-side-card">
+                <h3 class="form-side-card__title">Consejos</h3>
+
+                <div class="form-tip-list">
+                    <div class="form-tip-item">
+                        <span class="form-tip-item__icon">📝</span>
+                        <div>
+                            <strong>Título claro</strong>
+                            <p>Resume el problema en una frase corta y directa.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-tip-item">
+                        <span class="form-tip-item__icon">🔍</span>
+                        <div>
+                            <strong>Descripción útil</strong>
+                            <p>Explica qué ocurre, dónde ocurre y cuándo aparece el error.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-tip-item">
+                        <span class="form-tip-item__icon">⚡</span>
+                        <div>
+                            <strong>Prioridad adecuada</strong>
+                            <p>Usa HIGH solo cuando afecte de forma importante al flujo principal.</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>
